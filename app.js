@@ -2,6 +2,9 @@
 require('dotenv').config();
 const Express = require('express');
 const bodyParser = require('body-parser');
+const { Agent } = require('./src/shared/db/mongodb/schemas');
+// const { AdditionalModel } = require('./src/shared/db/mongodb/schemas');
+
 const app = Express();
 
 
@@ -62,6 +65,16 @@ app.post('/agent-create', (req, res) => {
         message: 'Agent created successfully',
         agent
     });
+});
+
+// alphabetical agents endpoint
+app.get('/agents', async (req, res) => {
+    try {
+        const agents = await Agent.find().sort({ last_name: 1 });
+        res.json(agents);
+    } catch (error) {
+        res.status(500).send({ message: 'Error fetching agents', error });
+    }
 });
 
 HealthRoutes.registerHealthRoutes(app);
