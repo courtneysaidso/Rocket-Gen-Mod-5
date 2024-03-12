@@ -82,4 +82,25 @@ const updateAgents = async (req, res) => {
     }
 };
 
-module.exports = {createAgent, getAgents, agentsByRegion, updateAgents};
+const deleteAgent = async (req, res) => {
+    const query = req.body;
+
+    try {
+        const agents = await Agent.find(query);
+        if (agents.length === 0) {
+            return res.status(404).send({ message: 'Agent not found' });
+        } else if (agents.length > 1) {
+            return res.status(400).send({ message: 'Multiple agents found. Please provide more specific query parameters.' });
+        } 
+        const deletedAgent = await Agent.findByIdAndRemove(agents[0]._id);
+        if (!deletedAgent) {
+            return res.status(404).send({ message: 'Agent not found' });
+        }
+        res.json({ message: 'Agent deleted successfully' });
+    } catch (error) {
+        res.status(500).send({ message: 'Error deleting agent', error: error.toString() });
+    }
+};
+
+
+module.exports = {createAgent, getAgents, agentsByRegion, updateAgents, deleteAgent};
