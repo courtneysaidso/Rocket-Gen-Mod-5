@@ -39,7 +39,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(Express.json());
 
 // /agent-create endpoint
-app.post('/agent-create', (req, res) => {
+app.post('/agent-create', async (req, res) => {
     const { first_name, last_name, email, region } = req.body;
 
     //check if req fields provided
@@ -51,14 +51,17 @@ app.post('/agent-create', (req, res) => {
     }
 
     //Set sales to 0 and default values
-    const agent = {
+    const agent = await Agent.create ({
         first_name,
         last_name,
         email,
         region,
-        sales: 0, // makes sales 0
+        sales: 0, // makes sales default to 0
         //any additional defaults would go here
-    };
+    });
+    if (!agent){
+        res.status(500).send({message: 'Create failed'});
+    }
     //return agent object
     res.status(201).send({
         success: true,
