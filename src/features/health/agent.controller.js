@@ -17,7 +17,8 @@ const createAgent = async (req, res) => {
         last_name,
         email,
         region,
-        sales: 0, // makes sales default to 0
+        sales: 0, // makes sales default to 0 
+        isManager: false
         //any additional defaults would go here
     });
     if (!agent){
