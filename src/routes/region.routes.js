@@ -1,7 +1,7 @@
-//const RegionController = require('../features/health/region.controller');
+const RegionController = require('../features/health/region.controller');
 
-//const registerRegionRoutes = (app) => {
-//app.post('/agent-create', RegionController.createAgent);
-//}
+const registerRegionRoutes = (app) => {
+app.post('/region-create', RegionController.createRegion);
+}
 
-//module.exports = {registerRegionRoutes};
+module.exports = {registerRegionRoutes};

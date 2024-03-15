@@ -41,7 +41,7 @@ app.use(Express.json());
 
 HealthRoutes.registerHealthRoutes(app);
 AgentRoutes.registerAgentRoutes(app);
-//RegionRoutes.registerRegionRoutes(app);
+RegionRoutes.registerRegionRoutes(app);
 
 const MongoManager = require('./src/shared/db/mongodb/mongo-manager')
 MongoManager.openMongoConnection();

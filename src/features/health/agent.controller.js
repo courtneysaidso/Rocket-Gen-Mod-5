@@ -103,5 +103,21 @@ const deleteAgent = async (req, res) => {
     }
 };
 
+// Method to get top agents by sales
+const getTopAgentsBySales = async () => {
+    try {
+        // Find agents with sales > 50000, sort by sales in descending order, and limit to top 3
+        const topAgents = await Agent.find({ sales: { $gt: 50000 } })
+            .sort({ sales: -1 })
+            .limit(3)
+            .exec(); // Execute the query
 
-module.exports = {createAgent, getAgents, agentsByRegion, updateAgents, deleteAgent};
+        return topAgents;
+    } catch (error) {
+        console.error('Error fetching top agents by sales:', error);
+        throw error; // Rethrow the error to handle it in the calling function
+    }
+};
+
+
+module.exports = {createAgent, getAgents, agentsByRegion, updateAgents, deleteAgent, getTopAgentsBySales};
