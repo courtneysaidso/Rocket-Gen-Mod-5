@@ -5,7 +5,7 @@ const createRegion = async (req, res) => {
     const regionName = req.query.region;
     console.log(`Checking for existing region: ${regionName}`);
 
-    // checking to see if region exist
+    // Checking to see if region already exists
     const existingRegion = await Region.findOne({region: regionName});
     console.log(`Existing region found: ${existingRegion}`);
 
@@ -13,28 +13,32 @@ const createRegion = async (req, res) => {
         return res.status(400).send({ message: "Region already exists"});
     }
 
-    // creating new region
+    // Creating new region
     const newRegion = new Region({name: regionName});
     await newRegion.save();
 
-    //get top agents
-    const getTopAgents = async () => {
-        try {
-            const topAgents = await getTopAgentsBySales();
-            console.log('Top agents by sales:', topAgents);
-        } catch (error) {
-            console.error('Failed to fetch top agents:', error);
-        }
-    };
-    
-    getTopAgents();
+    // Get top agents and assign them to the new region
+    try {
+        const topAgents = await getTopAgentsBySales();
+        console.log('Top agents by sales:', topAgents);
 
-    //return region object
+        // Assuming getTopAgentsBySales returns an array of agent IDs
+        newRegion.top_agents = topAgents;
+        await newRegion.save();
+
+        console.log('Top agents assigned to the new region.');
+    } catch (error) {
+        console.error('Failed to fetch top agents:', error);
+        return res.status(500).send({ message: "Failed to fetch top agents." });
+    }
+
+    // Return region object
     res.status(201).send({
         success: true,
         message: 'Region successfully created.',
         newRegion
     });
 };
+
 
 module.exports = {createRegion}
