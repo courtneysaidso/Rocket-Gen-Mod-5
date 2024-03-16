@@ -12,7 +12,7 @@ const agentSchema = new mongoose.Schema({
 
 // Define region schema
 const regionSchema = new mongoose.Schema({
-    region: String, 
+    name: String, 
     address: String,
     total_sales: [{ type: Number, default: 0}],
     manager: [{type: mongoose.Schema.Types.ObjectId, ref: 'Agent'}],

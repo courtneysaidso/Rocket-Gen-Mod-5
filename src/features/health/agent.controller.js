@@ -21,6 +21,7 @@ const createAgent = async (req, res) => {
         isManager: false
         //any additional defaults would go here
     });
+    
     if (!agent){
         res.status(500).send({message: 'Create failed'});
     }
